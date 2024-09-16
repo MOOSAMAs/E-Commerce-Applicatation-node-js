@@ -1,37 +1,48 @@
 import slugify from 'slugify'
 import { categoryModel } from "../../../databases/models/category.model.js"
+import { catchError } from '../../utils/globalErrors.js'
+import { handleError } from '../../utils/customError.js'
 
 
-const addCategory = async(req ,res)=>{
+const addCategory =catchError(async(req ,res , next)=>{
     let {name} = req.body
     const addedCateg = new categoryModel({name , slug:slugify(name)})
     await addedCateg.save()
     res.status(201).json({message:'Added Successfully' , addedCateg})
-}
+})
 
-const allCategories = async(req , res)=>{
+const allCategories = catchError(async(req , res , next)=>{
     const allCateg = await categoryModel.find({})
     res.status(201).json({message:'all Category' , allCateg})
-}
+})
 
-const oneCategory = async(req , res)=>{
+const oneCategory = catchError(async(req , res, next)=>{
     let {id} = req.params
     const oneCateg = await categoryModel.findById(id)
+    if (!oneCateg){
+        return next(new handleError('Category Not Found' , 404))
+    }
     res.status(201).json({message:'Specific Category' , oneCateg})
-}
+})
 
-const deleteCategory = async(req , res)=>{
+const deleteCategory = catchError(async(req , res , next)=>{
     let{id} = req.params
     const deleteCateg = await categoryModel.findByIdAndDelete(id)
+    if(!deleteCateg){
+       return next(new handleError('Category Not Found' , 404))
+    }
     res.status(201).json({message:'Deleted Successfully' , deleteCateg})
-}
+})
 
-const updateCategory = async(req , res)=>{
+const updateCategory = catchError(async(req , res , next)=>{
     let {id} = req.params
     let {name} = req.body
     const updateCateg = await categoryModel.findByIdAndUpdate(id , {name , slug:slugify(name)})
+    if(!updateCateg){
+       return next(new handleError('Category Not Found' , 404))
+    }
     res.status(201).json({message:'Updated Successfully' , updateCateg})
-}
+})
 
 export {
     addCategory,
