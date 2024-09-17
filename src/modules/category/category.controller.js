@@ -1,7 +1,7 @@
 import slugify from 'slugify'
 import { categoryModel } from "../../../databases/models/category.model.js"
-import { catchError } from '../../utils/globalErrors.js'
 import { handleError } from '../../utils/customError.js'
+import { catchError } from '../../middleware/errorHandle.js'
 
 
 const addCategory =catchError(async(req ,res , next)=>{
@@ -37,7 +37,7 @@ const deleteCategory = catchError(async(req , res , next)=>{
 const updateCategory = catchError(async(req , res , next)=>{
     let {id} = req.params
     let {name} = req.body
-    const updateCateg = await categoryModel.findByIdAndUpdate(id , {name , slug:slugify(name)})
+    const updateCateg = await categoryModel.findByIdAndUpdate(id , {name , slug:slugify(name)} , {new:true})
     if(!updateCateg){
        return next(new handleError('Category Not Found' , 404))
     }

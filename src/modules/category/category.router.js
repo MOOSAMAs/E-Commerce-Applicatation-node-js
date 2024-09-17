@@ -1,14 +1,17 @@
 import express from 'express'
-import { addCategory, allCategories, deleteCategory, oneCategory, updateCategory } from './category.controller.js'
+import * as category from './category.controller.js'
+import subCategoryRouter from '../subcategory/subcategory.router.js'
 
 const categoryRouter = express.Router()
 
+categoryRouter.use('/:categoryId/subcategory' , subCategoryRouter)
+
 categoryRouter.route('/')
-.post(addCategory)
-.get(allCategories)
+.post(category.addCategory)
+.get(category.allCategories)
 categoryRouter.route('/:id')
-.get(oneCategory)
-.delete(deleteCategory)
-.put(updateCategory)
+.get(category.oneCategory)
+.delete(category.deleteCategory)
+.put(category.updateCategory)
 
 export default categoryRouter
