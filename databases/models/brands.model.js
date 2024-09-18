@@ -9,6 +9,11 @@ const brandsSchema = new mongoose.Schema({
     },
     logo:{
         type:String
+    },
+    slug:{
+        type:String,
+        lowercase:true,
+        require:true
     }
 },
 {

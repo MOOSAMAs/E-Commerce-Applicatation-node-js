@@ -10,5 +10,6 @@ subCategoryRouter.route('/')
 subCategoryRouter.route('/:id')
 .get(subcategory.oneSubCategory)
 .put(subcategory.updateSubCategory)
+.delete(subcategory.deleteSubCategory)
 
 export default subCategoryRouter
