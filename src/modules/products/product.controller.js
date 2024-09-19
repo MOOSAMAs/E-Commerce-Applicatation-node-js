@@ -12,8 +12,19 @@ const addProduct = catchError(async (req , res , next)=>{
 })
 
 const allProducts = catchError(async(req , res , next)=>{
-    const result = await productModel.find({})
-    res.status(201).json({message:'all Product' , result})
+    let page = req.query.page*1 || 1
+    if(page <= 0 ) page = 1
+    const skip = (page-1) * 5
+    let filter = req.query
+    let exclude = ['page' , 'sort' , 'field']
+    exclude.forEach((q)=>{
+        delete filter[q]
+    })
+    filter = filter.stringfy(filter)
+    filter = filter.replace(/\b(gt | gte | lt | lte)\b/g , match=> `$${match}`)
+    filter = filter.parse(filter)
+    const result = await productModel.find({filter}).skip(skip).limit(5)
+    res.status(201).json({message:'all Product' , page , result })
 })
 
 const oneProduct = catchError(async(req , res , next)=>{
