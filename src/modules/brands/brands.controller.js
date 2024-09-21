@@ -3,6 +3,7 @@ import { catchError } from "../../middleware/errorHandle.js";
 import { brandsModel } from "../../../databases/models/brands.model.js";
 import { handleError } from "../../utils/customError.js";
 import { deleteOne } from "../handlers/factore.handler.js";
+import { apiFeatures } from "../../utils/apiFeatures.js";
 
 const addBrands = catchError(async (req , res , next)=>{
     const {name} = req.body
@@ -12,8 +13,10 @@ const addBrands = catchError(async (req , res , next)=>{
 })
 
 const allBrands = catchError(async(req , res , next)=>{
-    const result = await brandsModel.find({})
-    res.status(201).json({message:'all Brands' , result})
+    let ApiFeatures = new apiFeatures(brandsModel.find() , req.query)
+    .paginate().fields().filter().search().sort()
+    const result = await ApiFeatures.mongooseQuery
+    res.status(201).json({message:'all Brands',page:ApiFeatures.page , result})
 })
 
 const oneBrand = catchError(async(req , res , next)=>{

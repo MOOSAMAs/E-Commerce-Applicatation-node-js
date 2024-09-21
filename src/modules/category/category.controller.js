@@ -3,6 +3,7 @@ import { categoryModel } from "../../../databases/models/category.model.js"
 import { handleError } from '../../utils/customError.js'
 import { catchError } from '../../middleware/errorHandle.js'
 import { deleteOne } from '../handlers/factore.handler.js'
+import { apiFeatures } from '../../utils/apiFeatures.js'
 
 
 const addCategory =catchError(async(req ,res , next)=>{
@@ -13,8 +14,10 @@ const addCategory =catchError(async(req ,res , next)=>{
 })
 
 const allCategories = catchError(async(req , res , next)=>{
-    const result = await categoryModel.find({})
-    res.status(201).json({message:'all Category' , result})
+    let ApiFeatures = new apiFeatures(categoryModel.find() , req.query)
+    .paginate().fields().search().sort().filter()
+    const result = await ApiFeatures.mongooseQuery
+    res.status(201).json({message:'all Categories',page:ApiFeatures.page , result})
 })
 
 const oneCategory = catchError(async(req , res, next)=>{
