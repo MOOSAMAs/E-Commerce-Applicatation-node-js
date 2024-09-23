@@ -7,8 +7,9 @@ import { apiFeatures } from '../../utils/apiFeatures.js'
 
 
 const addCategory =catchError(async(req ,res , next)=>{
-    let {name} = req.body
-    const result = new categoryModel({name , slug:slugify(name)})
+    req.body.slug = slugify(req.body.name)
+    req.body.img = req.file.filename
+    const result = new categoryModel(req.body)
     await result.save()
     res.status(201).json({message:'Added Successfully' , result})
 })

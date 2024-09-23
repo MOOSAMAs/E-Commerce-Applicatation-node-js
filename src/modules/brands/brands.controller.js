@@ -14,7 +14,7 @@ const addBrands = catchError(async (req , res , next)=>{
 
 const allBrands = catchError(async(req , res , next)=>{
     let ApiFeatures = new apiFeatures(brandsModel.find() , req.query)
-    .paginate().fields().filter().search().sort()
+    .filter().paginate().fields().search().sort()
     const result = await ApiFeatures.mongooseQuery
     res.status(201).json({message:'all Brands',page:ApiFeatures.page , result})
 })
