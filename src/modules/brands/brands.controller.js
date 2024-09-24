@@ -6,8 +6,9 @@ import { deleteOne } from "../handlers/factore.handler.js";
 import { apiFeatures } from "../../utils/apiFeatures.js";
 
 const addBrands = catchError(async (req , res , next)=>{
-    const {name} = req.body
-    const result = new brandsModel({name , slug:slugify(name) })
+    req.body.slug = slugify(req.body.name)
+    req.body.logo = req.file.filename
+    const result = new brandsModel(req.body)
     await result.save()
     res.status(201).json({message:'Brand Added' , result})
 })

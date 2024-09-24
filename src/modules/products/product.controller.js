@@ -6,7 +6,9 @@ import { productModel } from "../../../databases/models/product.model.js";
 import { apiFeatures} from "../../utils/apiFeatures.js";
 
 const addProduct = catchError(async (req, res, next) => {
-  req.body.slug = slugify(req.body.title);
+  req.body.slug = slugify(req.body.title)
+  req.body.imgCover = req.files.imgCover[0].filename
+  req.body.images = req.files.images.map(obj => obj.filename)
   const result = new productModel(req.body);
   await result.save();
   res.status(201).json({ message: "Product Added", result });

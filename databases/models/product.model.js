@@ -50,7 +50,7 @@ const productSchema = new mongoose.Schema({
         default:0,
         min:0
     },
-    imgCover:{type:String},
+    imgCover:String,
     images:[String],
     category:{
         type:String,

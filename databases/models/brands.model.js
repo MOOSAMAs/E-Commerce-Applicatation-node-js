@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { mongo } from "mongoose";
 
 const brandsSchema = new mongoose.Schema({
     name:{
@@ -18,6 +18,10 @@ const brandsSchema = new mongoose.Schema({
 },
 {
     timestamps:true
+})
+
+brandsSchema.post('init' , (doc)=>{
+    doc.logo = process.env.BASE_URL+'/brands/' +doc.logo
 })
 
 export const brandsModel = mongoose.model('brand' , brandsSchema)

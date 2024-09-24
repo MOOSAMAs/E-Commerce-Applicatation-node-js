@@ -13,6 +13,7 @@ const port = 3000
 
 app.use(express.json())
 app.use(morgan('dev'))
+app.use(express.static('uploads'))
 app.use('/api/v1/categories' , categoryRouter)
 app.use('/api/v1/subcategory',subCategoryRouter)
 app.use('/api/v1/brands' , brandsRouter)
