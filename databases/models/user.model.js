@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import bcrypt from 'bcrypt'
 
 const userSchema = new mongoose.Schema({
     name:{
@@ -39,6 +40,14 @@ const userSchema = new mongoose.Schema({
 },
 {
     timestamps:true
+})
+
+userSchema.pre('save' , function () {
+    this.password = bcrypt.hashSync(this.password , 8)
+})
+
+userSchema.pre('findOneAndUpdate' , function () {
+    this._update.password = bcrypt.hashSync(this._update.password , 8)
 })
 
 export const userModel = mongoose.model('user' , userSchema)
