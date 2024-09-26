@@ -28,6 +28,7 @@ const oneUser = catchError(async(req , res , next)=>{
 
 const updateUser = catchError(async(req , res , next)=>{
     const {id} = req.params
+    req.body.passChangedAt = Date.now()
     const result = await userModel.findByIdAndUpdate(id , req.body , {new:true})
     !result && next(new handleError('user Not Found' , 401))
     result && res.status(201).json({message:'Updated Successfully}' , result})

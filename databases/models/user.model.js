@@ -24,6 +24,7 @@ const userSchema = new mongoose.Schema({
         require:true,
     },
     profilePic: String,
+    passChangedAt:Date,
     role:{
         type:String,
         enum:['user' , 'admin'],
