@@ -39,8 +39,17 @@ const protectRoutes = catchError(async (req , res , next)=>{
     next()
 })
 
+const allowedTo = (...roles)=>{
+    return catchError(async(req , res , next)=>{
+        if (!roles.includes(req.user.role)) return next(new handleError('You Not Authorized To access this point you are ' +req.user.role , 401))
+        next()
+    }
+)
+}
+
 export{
     signUp,
     signIn,
-    protectRoutes
+    protectRoutes,
+    allowedTo
 }

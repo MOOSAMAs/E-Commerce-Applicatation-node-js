@@ -14,6 +14,11 @@ const reviewsSchema = new mongoose.schema({
     product:{
         type:mongoose.Types.ObjectId,
         ref:'product'
+    },
+    reviews:{
+        type:Number,
+        min:1,
+        max:5
     }
 },{
     timestamps:true
