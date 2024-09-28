@@ -1,11 +1,11 @@
 import mongoose from "mongoose";
 
-const reviewsSchema = new mongoose.schema({
+const reviewsSchema = new mongoose.Schema({
     comment:{
         type:String,
-        require:true,
         minLength:5,
-        maxLength:100
+        maxLength:100,
+        required:true
     },
     user:{
         type:mongoose.Types.ObjectId,
@@ -15,13 +15,14 @@ const reviewsSchema = new mongoose.schema({
         type:mongoose.Types.ObjectId,
         ref:'product'
     },
-    reviews:{
+    rating:{
         type:Number,
         min:1,
-        max:5
+        max:5,
+        required:true
     }
 },{
     timestamps:true
 })
 
-const reviewModel = mongoose.model('review' , reviewsSchema)
+export const reviewModel = mongoose.model('review' , reviewsSchema)
