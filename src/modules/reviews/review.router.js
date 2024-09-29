@@ -1,11 +1,12 @@
 import express from 'express'
 import * as reviews from './review.controller.js'
 import { allowedTo, protectRoutes } from '../authentication/auth.controller.js'
+import { checkProductExists } from '../../middleware/productExist.js'
 
 const reviewsRouter = express.Router()
 
 reviewsRouter.route('/')
-.post(protectRoutes,allowedTo('user'), reviews.addReviews)
+.post(protectRoutes,allowedTo('user'),checkProductExists, reviews.addReviews)
 .get(reviews.allReviews)
 
 reviewsRouter.route('/:id')
