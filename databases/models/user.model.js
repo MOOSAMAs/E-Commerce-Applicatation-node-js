@@ -37,7 +37,16 @@ const userSchema = new mongoose.Schema({
     emailVerified:{
         type:Boolean,
         default:false
-    }
+    },
+    wishlist:[{
+        type:mongoose.SchemaTypes.ObjectId , 
+        ref:'product'
+    }],
+    addresses:[{
+        city:String,
+        street:String,
+        phone:String
+    }]
 },
 {
     timestamps:true
@@ -48,7 +57,7 @@ userSchema.pre('save' , function () {
 })
 
 userSchema.pre('findOneAndUpdate' , function () {
-    this._update.password = bcrypt.hashSync(this._update.password , 8)
+    if(this._update.password) this._update.password = bcrypt.hashSync(this._update.password , 8)
 })
 
 export const userModel = mongoose.model('user' , userSchema)
