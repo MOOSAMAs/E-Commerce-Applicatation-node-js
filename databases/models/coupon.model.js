@@ -1,16 +1,18 @@
-const couponSchema = new mongoose.schema({
+import mongoose from "mongoose"
+
+const couponSchema = new mongoose.Schema({
     code:{
         type:String,
         trim:true,
-        require:true
+        required:true
     },
     expireDate:{
         type:Date,
-        require:true
+        required:true
     },
     discount:{
         type:Number,
-        require:true,
+        required:true,
     }
 },
 {
