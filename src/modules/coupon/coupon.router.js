@@ -1,5 +1,5 @@
 import express from 'express'
-import * as coupons from './conpon.controller.js'
+import * as coupons from './coupon.controller.js'
 import { allowedTo, protectRoutes } from '../authentication/auth.controller.js'
 
 const couponsRouter = express.Router()

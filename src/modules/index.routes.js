@@ -3,6 +3,7 @@ import { handleError } from "../utils/customError.js"
 import addressRouter from "./address/address.router.js"
 import authRouter from "./authentication/auth.router.js"
 import brandsRouter from "./brands/brands.router.js"
+import cartRouter from "./cart/cart.router.js"
 import categoryRouter from "./category/category.router.js"
 import couponsRouter from "./coupon/coupon.router.js"
 import productRouter from "./products/product.router.js"
@@ -23,6 +24,7 @@ app.use('/api/v1/reviews' , reviewsRouter)
 app.use('/api/v1/wishlist' , wishlistRouter)
 app.use('/api/v1/address' , addressRouter)
 app.use('/api/v1/coupons' , couponsRouter)
+app.use('/api/v1/carts' , cartRouter)
 
 app.all('*' , (req ,res , next)=>{
     next(new handleError('invalid url' +req.originalUrl , 404))
