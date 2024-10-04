@@ -9,7 +9,7 @@ const cartSchema = new mongoose.Schema({
     }],
     totalPrice:Number,
     priceAfterDiscount:Number,
-    dicount:Number
+    discount:Number
 },{
     timestamps:true
 })

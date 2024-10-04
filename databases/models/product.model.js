@@ -80,8 +80,12 @@ productSchema.virtual('reviews', {
   });
 
 productSchema.post('init' , (doc)=>{
-    doc.images =doc.images.map((path => process.env.BASE_URL + '/products/' + path))
-    doc.imgCover = process.env.BASE_URL + '/products/' + doc.imgCover
+    if (doc.images) {
+        doc.images = doc.images.map((path) => process.env.BASE_URL + '/products/' + path);
+      }
+      if (doc.imgCover) {
+        doc.imgCover = process.env.BASE_URL + '/products/' + doc.imgCover;
+      }
 })
 
 productSchema.pre(/^find/ , function () {

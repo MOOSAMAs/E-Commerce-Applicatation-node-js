@@ -1,4 +1,5 @@
 import { cartModel } from "../../../databases/models/cart.model.js";
+import { couponModel } from "../../../databases/models/coupon.model.js";
 import { productModel } from "../../../databases/models/product.model.js";
 import { catchError } from "../../middleware/errorHandle.js";
 import { handleError } from "../../utils/customError.js";
@@ -32,10 +33,54 @@ const addProductToCart = catchError(async(req , res , next)=>{
         cartExist.cartItems.push(req.body)
     }
     calcTotalPrice(cartExist)
+    if(cartExist.discount){
+        cartExist.priceAfterDiscount = cartExist.totalPrice - (cartExist.totalPrice * cartExist.discount)/100
+    }
     await cartExist.save()
     res.status(201).json({message:'success' , cart:cartExist})
 })
 
+const deleteProductFromCart = catchError(async(req , res , next)=>{
+    const result = await cartModel.findOneAndUpdate({user:req.user._id} , {$pull: {cartItems:{_id:req.params.id}}} , {new:true})
+    !result &&  next(new handleError('Product Not Found' , 405))
+    calcTotalPrice(result)
+    if(result.discount){
+        result.priceAfterDiscount = result.totalPrice - (result.totalPrice * result.discount)/100
+    }
+    result &&  res.status(201).json({message:'added Successfully}' , result})
+})
+
+const applyCoupon = catchError(async(req , res , next)=>{
+    const coupon = await couponModel.findOne({code:req.body.code , expireDate:{$gt:Date.now()}})
+    if (!coupon) {
+        return next(new handleError('Coupon is invalid or expired', 400));
+    }
+    const cart = await cartModel.findOne({user:req.user._id})
+    cart.priceAfterDiscount = cart.totalPrice - (cart.totalPrice * coupon.discount)/100
+    cart.discount = coupon.discount
+    await cart.save()
+    res.status(201).json({message:'Coupon Applied' , cart})
+})
+
+const updateQuantity = catchError(async(req , res , next)=>{
+    let product = await productModel.findById(req.params.id).select('price')
+    if(!product) return next(new handleError('Product Not Fount' , 404))
+    let cart = await cartModel.findOne({user:req.user._id})
+    let item = cart.cartItems.find(elm => elm.product == req.params.id)
+    if(item){
+        item.quantity = req.body.quantity
+    }
+    calcTotalPrice(cart)
+    if(cart.discount){
+        cart.priceAfterDiscount = cart.totalPrice - (cart.totalPrice * cart.discount)/100
+    }
+    await cart.save()
+    res.status(201).json({message:'quantity updated' , cart})
+})
+
 export{
-    addProductToCart
+    addProductToCart,
+    deleteProductFromCart,
+    applyCoupon,
+    updateQuantity
 }
