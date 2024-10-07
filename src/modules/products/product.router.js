@@ -12,7 +12,7 @@ productRouter.route('/')
 
 productRouter.route('/:id')
 .get(product.oneProduct)
-.put(protectRoutes,allowedTo('admin'),product.updateProduct)
+.put(protectRoutes,allowedTo('user'),product.updateProduct)
 .delete(protectRoutes,allowedTo('admin'),product.deleteProduct)
 
 export default productRouter

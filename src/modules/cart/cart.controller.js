@@ -78,9 +78,15 @@ const updateQuantity = catchError(async(req , res , next)=>{
     res.status(201).json({message:'quantity updated' , cart})
 })
 
+const getLoggedCart = catchError(async (req , res , next)=>{
+    const cartItems = await cartModel.findOne({user:req.user._id}).populate('cartItems.product')
+    res.status(201).json({messgae:'User Cart' , cart:cartItems})
+})
+
 export{
     addProductToCart,
     deleteProductFromCart,
     applyCoupon,
-    updateQuantity
+    updateQuantity,
+    getLoggedCart
 }

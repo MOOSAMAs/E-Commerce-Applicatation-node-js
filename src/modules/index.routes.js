@@ -6,6 +6,7 @@ import brandsRouter from "./brands/brands.router.js"
 import cartRouter from "./cart/cart.router.js"
 import categoryRouter from "./category/category.router.js"
 import couponsRouter from "./coupon/coupon.router.js"
+import orderRouter from "./order/order.router.js"
 import productRouter from "./products/product.router.js"
 import reviewsRouter from "./reviews/review.router.js"
 import subCategoryRouter from "./subcategory/subcategory.router.js"
@@ -25,6 +26,7 @@ app.use('/api/v1/wishlist' , wishlistRouter)
 app.use('/api/v1/address' , addressRouter)
 app.use('/api/v1/coupons' , couponsRouter)
 app.use('/api/v1/carts' , cartRouter)
+app.use('/api/v1/orders' , orderRouter)
 
 app.all('*' , (req ,res , next)=>{
     next(new handleError('invalid url' +req.originalUrl , 404))
