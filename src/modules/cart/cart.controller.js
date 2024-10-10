@@ -43,10 +43,10 @@ const addProductToCart = catchError(async(req , res , next)=>{
 const deleteProductFromCart = catchError(async(req , res , next)=>{
     const result = await cartModel.findOneAndUpdate({user:req.user._id} , {$pull: {cartItems:{_id:req.params.id}}} , {new:true})
     !result &&  next(new handleError('Product Not Found' , 405))
-    calcTotalPrice(result)
     if(result.discount){
         result.priceAfterDiscount = result.totalPrice - (result.totalPrice * result.discount)/100
     }
+    calcTotalPrice(result)
     result &&  res.status(201).json({message:'added Successfully}' , result})
 })
 

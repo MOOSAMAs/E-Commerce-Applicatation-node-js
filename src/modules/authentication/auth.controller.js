@@ -18,7 +18,7 @@ const signIn = catchError(async(req , res , next)=>{
     const check = await userModel.findOne({email})
     const checkPass = bcrypt.compare(password , check.password)
     if (check && checkPass) {
-        const token = jwt.sign({name:check.name , userId:check._id , role:check.role} , process.env.SIGNIN_SECRET)
+        const token = jwt.sign({ name:check.name , email:check.email , userId:check._id , role:check.role} , process.env.SIGNIN_SECRET)
         res.status(200).json({message:'logged in successfully' , token})
     }
     next(new handleError('email or password not correct' , 401))
