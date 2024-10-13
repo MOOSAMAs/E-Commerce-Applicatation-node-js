@@ -4,7 +4,7 @@ import { orderModel } from "../../../databases/models/order.model.js";
 import { productModel } from "../../../databases/models/product.model.js";
 import { catchError } from "../../middleware/errorHandle.js";
 
-let stripe = new Stripe('sk_test_51Q8E45GC3zsE5br8lYg934re3iqH7VFNuzG2U6YWl4qSNSoTe2w8yKQx4tI5PjcP7d6edWK5n0gd04omUyNrih4o00TcBiqBzh')
+let stripe = new Stripe(process.env.STRIPE_SECRET)
 
 const createCashOrder = catchError(async(req , res , next)=>{
     const cart = await cartModel.findById(req.params.id)
