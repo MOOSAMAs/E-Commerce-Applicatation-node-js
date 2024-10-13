@@ -11,7 +11,7 @@ const categoryRouter = express.Router()
 categoryRouter.use('/:categoryId/subcategory' , subCategoryRouter)
 
 categoryRouter.route('/')
-.post(protectRoutes,allowedTo('admin') ,fileUpload('image' , 'category') ,validation(addCategorySchema),category.addCategory)
+.post(protectRoutes,allowedTo('user') ,fileUpload('image' , 'category') ,validation(addCategorySchema),category.addCategory)
 .get(category.allCategories)
 categoryRouter.route('/:id')
 .get(validation(oneCategorySchema) ,category.oneCategory)

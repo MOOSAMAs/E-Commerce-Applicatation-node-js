@@ -7,7 +7,7 @@ import { allowedTo, protectRoutes } from '../authentication/auth.controller.js'
 const subCategoryRouter = express.Router({mergeParams:true})
 
 subCategoryRouter.route('/')
-.post(protectRoutes,allowedTo('admin') ,validation(addSubCategorySchema),subcategory.addSubCategory)
+.post(protectRoutes,allowedTo('user') ,validation(addSubCategorySchema),subcategory.addSubCategory)
 .get(subcategory.allSubCategories)
 
 subCategoryRouter.route('/:id')
