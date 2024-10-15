@@ -64,7 +64,7 @@ const productSchema = new mongoose.Schema({
     },
     brand:{
         type:String,
-        require:true,
+        required:true,
         ref:'brand'
     }
 },
@@ -79,14 +79,6 @@ productSchema.virtual('reviews', {
     foreignField: 'product',
   });
 
-productSchema.post('init' , (doc)=>{
-    if (doc.images) {
-        doc.images = doc.images.map((path) => process.env.BASE_URL + '/products/' + path);
-      }
-      if (doc.imgCover) {
-        doc.imgCover = process.env.BASE_URL + '/products/' + doc.imgCover;
-      }
-})
 
 productSchema.pre(/^find/ , function () {
     this.populate('reviews')

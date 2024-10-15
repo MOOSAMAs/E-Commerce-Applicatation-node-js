@@ -8,7 +8,7 @@ import { allowedTo, protectRoutes } from '../authentication/auth.controller.js'
 const brandsRouter = express.Router()
 
 brandsRouter.route('/')
-.post(protectRoutes,allowedTo('admin') ,fileUpload('logo' , 'brands'),validation(addBrandSchema), brands.addBrands)
+.post(protectRoutes,allowedTo('user') ,fileUpload('logo' , 'brands'),validation(addBrandSchema), brands.addBrands)
 .get(brands.allBrands)
 
 brandsRouter.route('/:id')

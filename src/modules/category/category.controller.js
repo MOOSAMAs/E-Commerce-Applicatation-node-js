@@ -1,14 +1,20 @@
 import slugify from 'slugify'
+
 import { categoryModel } from "../../../databases/models/category.model.js"
 import { handleError } from '../../utils/customError.js'
 import { catchError } from '../../middleware/errorHandle.js'
 import { deleteOne } from '../handlers/factore.handler.js'
 import { apiFeatures } from '../../utils/apiFeatures.js'
+import { uploadImageToCloudinary } from '../../utils/upload.img.cloud.js'
 
 
 const addCategory =catchError(async(req ,res , next)=>{
     req.body.slug = slugify(req.body.name)
     req.body.img = req.file.filename
+    if (req.file) {
+        const imageUrl = await uploadImageToCloudinary(req.file.path);
+        req.body.img = imageUrl; // Save Cloudinary URL in the database
+      }
     const result = new categoryModel(req.body)
     await result.save()
     res.status(201).json({message:'Added Successfully' , result})

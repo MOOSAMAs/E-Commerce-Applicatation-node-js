@@ -4,10 +4,15 @@ import { brandsModel } from "../../../databases/models/brands.model.js";
 import { handleError } from "../../utils/customError.js";
 import { deleteOne } from "../handlers/factore.handler.js";
 import { apiFeatures } from "../../utils/apiFeatures.js";
+import { uploadImageToCloudinary } from "../../utils/upload.img.cloud.js";
 
 const addBrands = catchError(async (req , res , next)=>{
     req.body.slug = slugify(req.body.name)
     req.body.logo = req.file.filename
+    if (req.file) {
+        const logoUrl = await uploadImageToCloudinary(req.file.path, "brands/logos");
+        req.body.logo = logoUrl;
+      }
     const result = new brandsModel(req.body)
     await result.save()
     res.status(201).json({message:'Brand Added' , result})
